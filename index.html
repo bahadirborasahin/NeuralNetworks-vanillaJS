@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNIST Handwritten Digits</title>
+
+    <script src="./Math.js"></script>
+    <script src="./NeuralNetwork.js"></script>
+
+    
+    <style>
+        .container{
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .canvas-wrapper{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #screen{
+            border:1px solid black;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+
+    Choose Training Data
+    <input type="file" name="" id="trainingData">
+    <br>
+    Choose Test Data
+    <input type="file" name="" id="testData">
+
+    <button id="trainingStart">Start Training</button>
+
+
+    <div class="canvas-wrapper">
+    <canvas id="screen" width="280" height="280"></canvas>
+    <h1>
+
+        Idle
+
+    </h1>
+
+    <h2>   
+
+    </h2>
+
+    </div>
+
+    <script src="Index.js"></script>
+
+</div>
+</body>
+</html>
