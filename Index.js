@@ -26,7 +26,7 @@ function compress(x){
 
     document.getElementById("trainingStart").addEventListener("click",function(){
 
-        h1.innerText = "traning...";
+        h1.innerText = "training...";
         fr = new FileReader();
         fr.onload = function(){
             var data = fr.result.split("\n");
