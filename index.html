@@ -22,8 +22,12 @@
             justify-content: center;
         }
 
-        #screen{
+        #screen,#drawing{
             border:1px solid black;
+        }
+
+        .predict-area{
+            display: none;
         }
 
     </style>
@@ -35,8 +39,12 @@
     Choose Training Data
     <input type="file" name="" id="trainingData">
     <br>
+    I'd like to draw by myself, (not using test data)
+    <input type="checkbox" checked id="predictionMode">
+
+    <br>
     Choose Test Data
-    <input type="file" name="" id="testData">
+    <input type="file" name="" id="testData" disabled>
 
     <button id="trainingStart">Start Training</button>
 
@@ -54,6 +62,12 @@
     </h2>
 
     </div>
+
+    <div class="predict-area">
+    <canvas id="drawing" width="280" height="280"></canvas>
+    <button id="resetDrawing">RESET DRAWING</button>
+    </div>
+
 
     <script src="Index.js"></script>
 

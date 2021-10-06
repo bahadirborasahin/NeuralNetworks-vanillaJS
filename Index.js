@@ -1,5 +1,8 @@
-let trainEpoch = 5000;
+let trainEpoch = 2;
 let testEpoch = 5000;
+
+let predictable = false;
+
 
 function getMaxIndex(a){
     max = 0;
@@ -26,7 +29,7 @@ function compress(x){
 
     document.getElementById("trainingStart").addEventListener("click",function(){
 
-        h1.innerText = "traning...";
+        h1.innerText = "training...";
         fr = new FileReader();
         fr.onload = function(){
             var data = fr.result.split("\n");
@@ -48,8 +51,13 @@ function compress(x){
                     if(i<trainEpoch){
                     i++;
                     myLoop();
+                    if(i==trainEpoch){
+                    predictable = true;
+                    document.getElementsByClassName("predict-area")[0].style.display="block";
                     }
-                    else{
+
+                    }
+                    else if(!predictByDraw){
                         fr2 = new FileReader();
                         fr2.onload = function(){
                             var data = fr.result.split("\n");
@@ -99,4 +107,60 @@ function compress(x){
     })
 
 
+let drawingMode = false;
+const drawingCanvas = document.getElementById("drawing");
 
+
+drawingArray = Array(784).fill(0.01);
+
+drawingCanvas.addEventListener("mousedown",()=>drawingMode=true);
+drawingCanvas.addEventListener("mouseup",()=>drawingMode=false);
+drawingCanvas.addEventListener("mousemove",function(e){
+
+    if(drawingMode){
+        let pixX = Math.floor(e.offsetX/10);
+        let pixY = Math.floor(e.offsetY/10);
+        drawingArray[pixY*28+pixX] = 0.99;
+        if(Math.abs(280-pixX)>3 && Math.abs(pixX-280)< 273){
+            drawingArray[(pixY-1)*28+pixX] = 0.70;
+            drawingArray[(pixY+1)*28+pixX] = 0.70;
+            drawingArray[(pixY)*28+pixX-1] = 0.70;
+            drawingArray[(pixY)*28+pixX+1] = 0.70;
+        }
+    }
+});
+
+const drawingCtx = drawingCanvas.getContext('2d');
+
+function drawingRender(){
+    drawingCtx.clearRect(0,0,280,280);
+    for(let i = 0;i<784;i++){
+        if(drawingArray[i]!=0.01){
+            ctx.fillStyle = "rgba(0,0,0,"+drawingArray[i]+")";
+            drawingCtx.fillRect((i%28)*10,(Math.floor(i/28))*10,10,10);
+        }
+    }
+
+    if(predictable && predictByDraw){
+    let result = nn.query([drawingArray]);
+    h1.innerText = "Prediction: "+getMaxIndex(result.matrix);
+    }
+    requestAnimationFrame(drawingRender);
+}
+
+
+
+drawingRender();
+
+
+const resetBtt = document.getElementById("resetDrawing");
+
+resetBtt.addEventListener("click",()=>drawingArray = Array(784).fill(0.01));
+
+const predictionMode = document.getElementById("predictionMode");
+const predictByDraw = true;
+
+
+predictionMode.addEventListener("change",function(){
+    predictByDraw = this.checked;
+});
